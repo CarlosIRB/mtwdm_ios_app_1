@@ -39,9 +39,11 @@ final class SettingsViewModel: Observable {
         countriesLoading = true
         do {
             let all = try await CountriesService.shared.fetchAll()
+            
             countries = all.sorted { $0.name.common < $1.name.common }
             countriesLoading = false
         } catch {
+            
             countriesError = error.localizedDescription
             countriesLoading = false
         }

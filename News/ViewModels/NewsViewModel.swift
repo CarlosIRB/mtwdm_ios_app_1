@@ -44,4 +44,5 @@ final class NewsViewModel {
             state = .success(list)
         } catch { state = .failure(error) }
     }
+    
 }

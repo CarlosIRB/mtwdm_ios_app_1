@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct SourcesView: View {
+    @Environment(PinnedViewModel.self) var pinned
+    
     var body: some View {
         List {
-            NavigationLink("BBC News", destination: NewsListView(source: "bbc-news"))
+            Section("Fuentes guardadas") {
+                            ForEach(Array(pinned.pinnedSources), id: \.self) { src in
+                                NavigationLink(src.capitalized, destination: NewsListView(source: src))
+                            }
+                        }
         }
         .navigationTitle("Fuentes")
     }
@@ -18,6 +24,6 @@ struct SourcesView: View {
 
 #Preview {
     NavigationStack {
-        SourcesView()
+        SourcesView().environment(PinnedViewModel.shared)
     }
 }

@@ -10,5 +10,5 @@ import Foundation
 enum Config {
     static let newsAPIKey = "559dd9db1ff845ffaeeaacf050e3873b"
     static let newsBaseURL = "https://newsapi.org/v2"
-    static let restCountriesURL = "https://restcountries.com/v3.1/all"
+    static let restCountriesURL = "https://restcountries.com/v3.1"
 }

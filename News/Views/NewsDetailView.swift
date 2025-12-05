@@ -11,7 +11,6 @@ struct NewsDetailView: View {
     let article: Article
     @Environment(\.pinned) var pinned
 
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
@@ -41,7 +40,28 @@ struct NewsDetailView: View {
             }
             .padding()
         }
-        .toolbar { Button { pinned.add(article) } label: { Image(systemName: "bookmark") } }
+        .toolbar {
+            Button {
+                if pinned.isPinned(article) {
+                    pinned.remove(article)
+                } else {
+                    pinned.add(article)
+                }
+            } label: {
+                Image(systemName: pinned.isPinned(article) ? "bookmark.fill" : "bookmark")
+            }
+            if let sourceName = article.source?.id {
+                Button {
+                    if pinned.isSourcePinned(sourceName) {
+                        pinned.removeSource(sourceName)
+                    } else {
+                        pinned.addSource(sourceName)
+                    }
+                } label: {
+                    Image(systemName: pinned.isSourcePinned(sourceName) ? "star.fill" : "star")
+                }
+            }
+        }
         .navigationTitle("Detalle")
         .navigationBarTitleDisplayMode(.inline)
     }

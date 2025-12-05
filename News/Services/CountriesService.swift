@@ -12,7 +12,25 @@ final class CountriesService {
     private init() {}
 
     func fetchAll() async throws -> [Country] {
-        guard let url = URL(string: Config.restCountriesURL) else { throw NetworkError.invalidURL }
-        return try await NetworkService.shared.request(url: url)
+        guard var components = URLComponents(string: Config.restCountriesURL + "/all") else {
+            throw NetworkError.invalidURL
+        }
+        components.queryItems = [
+            URLQueryItem(name: "fields", value: "name,cca2,flags")
+        ]
+        let url = components.url!
+        print(url)
+
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        print(response)
+
+        if let http = response as? HTTPURLResponse,
+            !(200...299).contains(http.statusCode) {
+            throw NetworkError.serverError(http.statusCode)
+        }
+
+        return try JSONDecoder().decode([Country].self, from: data)
     }
 }
+
