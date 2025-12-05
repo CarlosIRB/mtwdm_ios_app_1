@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct NewsAggregatorApp: App {
+    @State private var settings = SettingsViewModel.shared
+    @State private var pinned = PinnedViewModel.shared
+
     var body: some Scene {
         WindowGroup {
-            Text("Inicializando…")
+            ContentView()
+                .environment(settings)
+                .environment(pinned)
+
         }
     }
 }
