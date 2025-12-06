@@ -19,17 +19,17 @@ final class NewsViewModel {
     func loadTop(country: String?) async {
         state = .loading
         do {
-            let list = try await NewsService.shared.topHeadlines(query: .init(country: country))
+            let list = try await NewsService.shared.unifiedTopHeadlines(query: .init(country: country))
             articles = list
             state = .success(list)
         } catch { state = .failure(error) }
     }
-
+    
     @MainActor
     func loadCategory(_ cat: String, country: String?) async {
         state = .loading
         do {
-            let list = try await NewsService.shared.topHeadlines(query: .init(country: country, category: cat))
+            let list = try await NewsService.shared.unifiedTopHeadlines(query: .init(country: country, category: cat))
             articles = list
             state = .success(list)
         } catch { state = .failure(error) }

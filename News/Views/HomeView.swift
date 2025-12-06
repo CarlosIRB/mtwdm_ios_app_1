@@ -72,7 +72,7 @@ struct HomeView: View {
                     }
                 }
             }
-            Section("Noticias Destacadas") {
+            Section("Noticias Destacadas: \(settings.selectedCountryName) \(settings.selectedCountryCode)") {
                 switch vm.state {
                 case .idle: Text("Pulsa para cargar")
                 case .loading: LoadingView()
@@ -80,8 +80,27 @@ struct HomeView: View {
                         Task { await vm.loadTop(country: settings.selectedCountryCode) }
                 }
                 case .success(let list):
-                    ForEach(list) { a in
-                        NavigationLink(value: a) { NewsRowView(article: a) }
+                    if list.isEmpty {
+                        VStack(alignment: .center, spacing: 16) {
+                            Image(systemName: "globe.europe.africa")
+                                .font(.system(size: 40))
+                                .foregroundColor(.secondary)
+
+                            Text("No hay noticias disponibles para este país.")
+                                .font(.headline)
+                                .multilineTextAlignment(.center)
+
+                            Text("Prueba seleccionando otro país en la configuración.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 24)
+                    } else {
+                        ForEach(list) { a in
+                            NavigationLink(value: a) { NewsRowView(article: a) }
+                        }
                     }
                 }
             }

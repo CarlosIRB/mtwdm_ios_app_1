@@ -16,9 +16,12 @@ final class SettingsViewModel: Observable {
     
     var selectedCountryCode: String {
             get { UserDefaults.standard.string(forKey: keyCountry) ?? "us" }
-            set { UserDefaults.standard.set(newValue, forKey: keyCountry) }
+            set {
+                UserDefaults.standard.set(newValue, forKey: keyCountry)
+                updateCountryName()
+            }
         }
-
+    
     var categories: [String: Bool] = [
         "business": true,
         "entertainment": true,
@@ -32,6 +35,8 @@ final class SettingsViewModel: Observable {
     var countries: [Country] = []
     var countriesLoading = false
     var countriesError: String? = nil
+    
+    var selectedCountryName: String = "United States"
 
     @MainActor
     func loadCountries() async {
@@ -41,6 +46,7 @@ final class SettingsViewModel: Observable {
             let all = try await CountriesService.shared.fetchAll()
             
             countries = all.sorted { $0.name.common < $1.name.common }
+            updateCountryName()
             countriesLoading = false
         } catch {
             
@@ -48,4 +54,14 @@ final class SettingsViewModel: Observable {
             countriesLoading = false
         }
     }
+    
+    func updateCountryName() {
+            if let c = countries.first(where: {
+                $0.cca2.lowercased() == selectedCountryCode.lowercased()
+            }) {
+                selectedCountryName = c.name.common
+            } else {
+                selectedCountryName = selectedCountryCode.uppercased()
+            }
+        }
 }

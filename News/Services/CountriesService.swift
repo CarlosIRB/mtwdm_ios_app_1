@@ -19,12 +19,9 @@ final class CountriesService {
             URLQueryItem(name: "fields", value: "name,cca2,flags")
         ]
         let url = components.url!
-        print(url)
-
+        
         let (data, response) = try await URLSession.shared.data(from: url)
         
-        print(response)
-
         if let http = response as? HTTPURLResponse,
             !(200...299).contains(http.statusCode) {
             throw NetworkError.serverError(http.statusCode)

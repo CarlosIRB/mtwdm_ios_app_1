@@ -42,7 +42,7 @@ struct NewsRowView: View {
             title: "Título de ejemplo para la preview",
             description: "Descripción",
             url: "https://example.com",
-            urlToImage: nil,
+            urlToImage: Config.genericImage,
             publishedAt: nil,
             content: nil
         )

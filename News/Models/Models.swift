@@ -11,6 +11,12 @@ struct NewsResponse: Codable {
     let status: String
     let totalResults: Int?
     let articles: [Article]
+    let source: [Source]?
+}
+
+struct SourcesResponse: Codable {
+    let status: String
+    let sources: [NewsSourceDTO]
 }
 
 struct Article: Codable, Identifiable, Hashable {
@@ -25,9 +31,32 @@ struct Article: Codable, Identifiable, Hashable {
     let content: String?
 }
 
+extension Article {
+    init(fromSource s: NewsSourceDTO) {
+        self.source = Source(id: s.id, name: s.name)
+        self.author = nil
+        self.title = s.description ?? "Title not available"
+        self.description = s.description
+        self.url = s.url ?? ""
+        self.urlToImage = Config.genericImage
+        self.publishedAt = nil
+        self.content = "\(s.category?.capitalized ?? "General") – \(s.country?.uppercased() ?? "")"
+    }
+}
+
 struct Source: Codable, Hashable {
     let id: String?
     let name: String?
+}
+
+struct NewsSourceDTO: Codable, Identifiable {
+    let id: String?
+    let name: String?
+    let description: String?
+    let url: String?
+    let category: String?
+    let language: String?
+    let country: String?
 }
 
 struct Country: Codable, Identifiable {

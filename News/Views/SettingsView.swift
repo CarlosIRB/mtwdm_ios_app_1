@@ -15,7 +15,7 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            // MARK: País
+            
             Section("País") {
                 if settings.countriesLoading {
                     LoadingView()
@@ -28,7 +28,9 @@ struct SettingsView: View {
                         HStack {
                             Text("País")
                             Spacer()
-                            Text(selectedCountryName)
+                            Text(settings.selectedCountryName)
+                                .foregroundColor(.secondary)
+                            Text(settings.selectedCountryCode)
                                 .foregroundColor(.secondary)
                         }
                     }
@@ -54,12 +56,7 @@ struct SettingsView: View {
         }
     }
     
-    // Nombre visible del país seleccionado
-    private var selectedCountryName: String {
-        settings.countries.first(where: {
-            $0.cca2.lowercased() == settings.selectedCountryCode.lowercased()
-        })?.name.common ?? settings.selectedCountryCode.uppercased()
-    }
+    
 }
 
 extension SettingsView {
