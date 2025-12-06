@@ -50,7 +50,7 @@ struct NewsListView: View {
         } else if let s = source {
             vm.state = .loading
             do {
-                let list = try await NewsService.shared.topHeadlines(query: .init(sources: s))
+                let list = try await NewsService.shared.unifiedTopHeadlines(query: .init(sources: s))
                 vm.articles = list
                 vm.state = .success(list)
             } catch { vm.state = .failure(error) }
