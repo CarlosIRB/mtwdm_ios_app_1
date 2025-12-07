@@ -23,7 +23,7 @@ struct NewsDetailView: View {
                         @unknown default: EmptyView()
                         }
                     }
-                    .frame(height: 220)
+                    .frame(width: 400, height: 220)
                     .clipped()
                 }
 
